@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Akaya+Kanadaka&family=Barriecito&family=Caveat:wght@400..700&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Gloria+Hallelujah&family=Jaini&family=Lakki+Reddy&family=Major+Mono+Display&family=Poiret+One&family=Ponomar&family=Rock+Salt&family=Smooch+Sans:wght@100..900&family=Spicy+Rice&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./output.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Akaya+Kanadaka&family=Barriecito&family=Caveat:wght@400..700&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Gloria+Hallelujah&family=Jaini&family=Lakki+Reddy&family=Major+Mono+Display&family=Rock+Salt&family=Spicy+Rice&display=swap" rel="stylesheet"><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Akaya+Kanadaka&family=Barriecito&family=Caveat:wght@400..700&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Gloria+Hallelujah&family=Jaini&family=Lakki+Reddy&family=Major+Mono+Display&family=Ponomar&family=Rock+Salt&family=Smooch+Sans:wght@100..900&family=Spicy+Rice&display=swap" rel="stylesheet">    <style>
+        /* Custom animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+         
+        *{
+            overflow: hidden;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Loading animation */
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #3b82f6;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Smooth transition for home content */
+        .home-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .home-content.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Background and container styles */
+        .sc {
+             background-color: #dbdad5;
+
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            
+        }
+
+        .lhead {
+            font-family: "Spicy Rice", serif;
+        }
+
+        /* Circle styling */
+        .circle-container {
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8%;
+            color: white;
+            backdrop-filter: blur(5px);
+             background-color: rgba(244, 244, 244, 0.82); /* Equivalent to white/90 */
+
+
+            font-size: 1.2rem;
+            font-family: "Major Mono Display", monospace;            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .circle-container p {
+            z-index: 2;
+        }
+
+        .circle-container::before {
+            content: '';
+            position: absolute;
+            
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: scale(0);
+            transition: transform 0.3s ease;
+        }
+        .hidden {
+    display: none;
+}
+        .circle-container:hover::before {
+            transform: scale(1);
+        }
+     
+      
+
+         
+       
+        .lt {
+            font-family: "Poiret One", sans-serif;
+            font-weight: 500;
+            overflow: hidden; /* Hide overflow text */
+             animation: blink-caret 0.75s step-end infinite;
+        }
+
+        
+        
+        .typing {
+            white-space: pre-line;
+            overflow: hidden;
+            display: inline-block;
+         }
+  
+
+         .it{
+            transform: rotate(-3deg);
+         }
+ 
+ 
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="sc h-[100vh] w-[100vw] Container flex items-center justify-center">
+        <div class="absolute h-[200px] w-[300px] bottom-[8%]"><img src="./assests/tit-removebg-preview.png" alt=""></div>
+        <h1 class="absolute bottom-[15%] text-center max-w-5xl text-2xl  lt ">Traveling is not just about reaching new places; it's about discovering pieces of yourself in every sunset, every winding street, and every whispered story of the unknown.</h1>
+                
+        <div class="h-[250px] w-[1050%] overflow-hidden absolute top-10 it">
+            <div class="flex gap-4 mx-5">
+                <!-- Landscape images -->
+                
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l1.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p1.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p2.jpg');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l4.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p3.png');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l2.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p4.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p5.jpg');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l3.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p6.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1729932989301-214d44dc1a91?q=80&w=1970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l1.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p1.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p2.jpg');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l4.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p3.png');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l2.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p4.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p5.jpg');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l3.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p6.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1729932989301-214d44dc1a91?q=80&w=1970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l1.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p1.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p2.jpg');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l4.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p3.png');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l2.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p4.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p5.jpg');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l3.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p6.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1729932989301-214d44dc1a91?q=80&w=1970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l1.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p1.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p2.jpg');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l4.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p3.png');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l2.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p4.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p5.jpg');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l3.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p6.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1729932989301-214d44dc1a91?q=80&w=1970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l1.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p1.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p2.jpg');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l4.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p3.png');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l2.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p4.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p5.jpg');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l3.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p6.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1729932989301-214d44dc1a91?q=80&w=1970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l1.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p1.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p2.jpg');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l4.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p3.png');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l2.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p4.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p5.jpg');"></div>
+                <div class="h-[250px] w-[350px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/l3.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('./assests/p6.jpg');"></div>
+                <div class="h-[250px] w-[180px] rounded-xl bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1729932989301-214d44dc1a91?q=80&w=1970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');"></div>
+ 
+        
+                  
+            </div>
+        </div>
+        
+           <!-- Circle Container -->
+        <div id="circleContainer" class="circle-container   ">
+            <p class="text-[#121313]">Start the Journey</p>
+         </div>
+
+        <!-- Login and Register Container -->
+        <div id="formContainer" class="container backdrop-blur-[200px] rounded-2xl shadow-2xl overflow-hidden w-full max-w-sm
+ relative hidden">
+           
+            <!-- Login Form -->
+            <div id="loginContainer" class="p-8  animate-fade-in backdrop-blur-[50%]">
+                <h2 class="text-3xl font-bold text-[#295E6A] mb-6 text-center lhead">Welcome Back</h2>
+                <form id="loginForm" class="space-y-6">
+                    <input type="email" id="email" placeholder="Email" required
+                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-300">
+                    <input type="password" id="password" placeholder="Password" required
+                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-300">
+                    <button type="submit"
+                        class="w-full bg-[#79B4B7]/80 text-[#D9E4DD] py-3 rounded-lg hover:bg-[#79B4B7] transition duration-900 font-semibold">
+                        Login
+                    </button>
+                </form>
+                <p class="mt-6 text-center text-gray-600">
+                    Don't have an account? 
+                    <a href="#" id="showRegister" class="text-blue-500 hover:underline">Register</a>
+                </p>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerContainer" class="p-8 animate-fade-in hidden">
+                <h2 class="text-3xl font-bold text-[#295E6A] mb-6 text-center lhead">Create Account</h2>
+                <form id="registerForm" class="space-y-6">
+                    <input type="text" id="regName" placeholder="Full Name" required
+                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-300">
+                    <input type="email" id="regEmail" placeholder="Email" required
+                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-300">
+                    <input type="password" id="regPassword" placeholder="Password" required
+                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-300">
+                    <button type="submit"
+                        class="w-full bg-[#79B4B7]/80 text-[#D9E4DD] py-3 rounded-lg hover:bg-[#79B4B7] transition duration-900 font-semibold">
+                        Register
+                    </button>
+                </form>
+                <p class="mt-6 text-center text-gray-600">
+                    Already have an account? 
+                    <a href="#" id="showLogin" class="text-blue-500 hover:underline">Login</a>
+                </p>
+            </div>
+
+           
+        </div>
+
+         
+    </div>
+    
+</div>
+<script src="https://unpkg.com/lenis@1.2.3/dist/lenis.min.js"></script> 
+
+    <script>
+         
+      
+
+        
+       
+        gsap.from("#circleContainer",{
+            
+            y:-1000,
+            ease: "bounce.out",
+            duration:1.5
+        },'s')
+        // Initial GSAP Animation: Move .it div to the left
+let initialAnimation = gsap.to(".it div", {
+    x: "-1500", // Moves left
+    duration: 150, // Adjust scrolling speed
+});
+
+// GSAP Animation: Circle to Form
+const circleContainer = document.getElementById('circleContainer');
+const formContainer = document.getElementById('formContainer');
+
+circleContainer.addEventListener('click', () => {
+    // Stop the initial animation
+    initialAnimation.kill();
+
+    // Move .it div to -1000 units
+    gsap.to(".it div", {
+        x: -1000,
+        duration: 2.5,
+        ease: "power2.out",
+        lazy: true,
+        scrub: 5,
+        onComplete: () => {
+            // After shifting to -1000, start a new animation from the current position
+            gsap.to(".it div", {
+                x: "-2500", // Move to -150% from the current position
+                duration: 180, // Adjust duration as needed
+                ease: "power2.out",
+            });
+        }
+    });
+
+    // Hide the circle and show the form (unchanged)
+    gsap.to(circleContainer, {
+        scale: 0,
+        opacity: 0,
+        duration: 0.5,
+        ease: 'power2.inOut',
+        onComplete: () => {
+            circleContainer.classList.add('hidden');
+            formContainer.classList.remove('hidden');
+
+            // Animate the form container
+            gsap.from(formContainer, {
+                scale: 0.8,
+                opacity: 0,
+                duration: 0.5,
+                ease: 'power2.out',
+            });
+            gsap.to(formContainer, {
+                x: 100
+            });
+        },
+    });
+});
+        // Mouse movement effect for the circle
+        const arrow = document.querySelector('#circleContainer');
+
+        circleContainer.addEventListener('mousemove', (e) => {
+            const rect = circleContainer.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            // Calculate mouse position relative to the center of the circle
+            const mouseX = e.clientX - centerX;
+            const mouseY = e.clientY - centerY;
+
+            // Move the arrow within a 50px radius
+            const moveX = (mouseX / rect.width) * 50;
+            const moveY = (mouseY / rect.height) * 50;
+
+            arrow.style.transform = ` translate(${moveX}px, ${moveY}px)`;
+        });
+
+        
+
+        // Toggle between Login and Register forms
+        document.getElementById('showRegister').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('loginContainer').classList.add('hidden');
+            document.getElementById('registerContainer').classList.remove('hidden');
+        });
+
+        document.getElementById('showLogin').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('registerContainer').classList.add('hidden');
+            document.getElementById('loginContainer').classList.remove('hidden');
+        });
+
+ // Handle Login Form Submission
+ document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+        const res = await fetch("http://localhost:5000/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("username", data.name); // Store username
+
+            // Redirect to home.html after successful login
+            window.location.href = 'home.html';
+        } else {
+            alert(data.message || "Login failed! Please check your credentials.");
+        }
+    } catch (error) {
+        console.error("Login Error:", error);
+        alert("Network error. Please try again.");
+    }
+});
+
+
+    // Handle Register Form Submission
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('regName').value;
+    const email = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPassword').value;
+
+    try {
+        // Register the user
+        const res = await fetch("http://localhost:5000/api/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, password }),
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+            // Automatically log in after registration
+            const loginRes = await fetch("http://localhost:5000/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const loginData = await loginRes.json();
+            if (loginRes.ok) {
+                localStorage.setItem("token", loginData.token);
+                localStorage.setItem("username", name); // Store username
+
+                // Redirect to home.html after successful login
+                window.location.href = 'home.html';
+            } else {
+                alert("Registration successful! Please log in manually.");
+            }
+        } else {
+            alert(data.message || "Registration failed! Please check your inputs.");
+        }
+    } catch (error) {
+        console.error("Registration Error:", error);
+        alert("Network error. Please try again.");
+    }
+});
+     
+    </script>
+</body>
+</html>
